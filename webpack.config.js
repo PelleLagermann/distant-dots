@@ -31,7 +31,7 @@ const demoConfig = {
         dd: "./src/scripts/index.js"
     },    
     output: {
-        path: Path.join(__dirname, 'demo'),
+        path: Path.join(__dirname, 'dist'),
         filename: '[name].[chunkhash].js'
     },
     module: {

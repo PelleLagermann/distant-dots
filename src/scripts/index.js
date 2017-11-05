@@ -15,6 +15,7 @@ import gameRunning from "./game-states/game-running";
 import gameOver from "./game-states/game-over";
 
 import debugInfo from "./debug-info";
+import konami from "./konami";
 
 global.canvas = document.getElementById("gameCanvas");
 global.ctx = canvas.getContext("2d");
@@ -31,7 +32,8 @@ global.settings = {
     dotIncrease: 3,
     padding: 20,
     dotRadius: 10,
-    dotColor: "#A4EED6"
+    dotColor: "#A4EED6",    
+    gameOverDotColor: "hotpink"
 };
 
 global.mouse = {
@@ -73,7 +75,12 @@ function gameLoop () {
         homeScreen.update();
     } else if (game.state === 1 || game.state === 2) { //GAME RUNNING
         gameRunning.update();
-    } else if (game.state === -1) { //GAME OVER
+
+        if (game.cheatMode) {
+            debugInfo.hoverRadius();
+        }
+    } else if (game.state === -1 || game.state === 1) { //GAME OVER
+        gameRunning.update();
         gameOver.update();
     }    
 
@@ -95,11 +102,11 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas, false);
     
 canvas.addEventListener("click", function (evt) {    
-    if (game.state === 0) { //HOME SCREEN
+    if (game.state === 0) { //HOME SCREEN        
         homeScreen.clickHandler(evt);
-    } else if (game.state === 1 || game.state === 2) { //GAME RUNNING
+    } else if (game.state === 1 || game.state === 2) { //GAME RUNNING        
         gameRunning.clickHandler(evt);
-    } else if (game.state === -1) { //GAME OVER
+    } else if (game.state === -1) { //GAME OVER        
         gameOver.clickHandler();
     }
 });
@@ -112,5 +119,7 @@ canvas.addEventListener("mousemove", function (evt) {
     mouse.y = evt.clientY - canvasRect.top - root.scrollTop;       
 });
     
+konami();
+
 setInterval(gameLoop, (1000 / settings.fps));
   

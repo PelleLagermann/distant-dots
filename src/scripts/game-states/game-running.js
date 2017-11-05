@@ -1,3 +1,5 @@
+let gameOverIndex = null;
+
 const gameRunning = {
     update: function () {        
         if (game.state === 1) {
@@ -9,6 +11,12 @@ const gameRunning = {
         if (game.state === 2) {
             levelCompleted();
         }        
+
+        if (game.state === -1) {
+            drawDots();
+            connectDots();
+            markClosestDot();
+        }
     },
         
     clickHandler: function (evt) {        
@@ -28,6 +36,8 @@ const gameRunning = {
                     }
                 } else {
                     game.state = -1;                    
+                    gameOverIndex = index;
+                    currentLevel[index].color = settings.gameOverDotColor; 
 
                     if (game.highscore < game.score) {
                         game.highscore = game.score;
@@ -59,7 +69,7 @@ function drawDots () {
     for (let i = 0; i < currentLevel.length; i ++) {
         const dot = currentLevel[i];
         ch.drawCircle(dot.x, dot.y, dot.radius, {
-            fill: settings.dotColor,
+            fill: dot.color,
             hitColor: dot.colorId
         });        
     }
@@ -82,5 +92,16 @@ function highlightMousePath () {
         mouse.y);
 }
 
+function markClosestDot () {    
+    const center = {
+        x: currentLevel[game.levelProgress].x,
+        y: currentLevel[game.levelProgress].y
+    };          
+    const radius = currentLevel[game.levelProgress + 1].distance;
+    
+    ch.drawCircle (center.x, center.y, radius, {
+        stroke: settings.gameOverDotColor
+    });
+}
 
 export default gameRunning;

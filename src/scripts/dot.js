@@ -1,7 +1,8 @@
 class Dot {
-    constructor(x, y, colorId) {
+    constructor(x, y, color, colorId) {
         this.x = x;
         this.y = y;      
+        this.color = color;
         this.colorId = colorId;
         this.r = settings.dotRadius;
         this.rMin = this.r;

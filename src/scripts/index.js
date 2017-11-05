@@ -43,12 +43,18 @@ global.mouse = {
 
 global.initGame = function () {    
     const highscore = localStorage.getItem('highscore') || 0;
+    let savegame = localStorage.getItem('savegame');
+    if (savegame) {
+        savegame = JSON.parse(savegame);
+    } else {
+        savegame = {};
+    }
 
     global.game = {    
-        state: 0, // O: Home screen, 1: Game running, 2: Level completed, -1: Game over
-        score: 0,
-        level: 0,
-        levelProgress: 0,
+        state: savegame.state || 0, // O: Home screen, 1: Game running, 2: Level completed, -1: Game over
+        score: savegame.score || 0,
+        level: savegame.level || 0,
+        levelProgress: savegame.levelProgress || 0,
         highscore: highscore
     };
 }

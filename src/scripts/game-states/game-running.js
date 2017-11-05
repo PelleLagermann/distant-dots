@@ -38,6 +38,7 @@ const gameRunning = {
                     game.state = -1;                    
                     gameOverIndex = index;
                     currentLevel[index].color = settings.gameOverDotColor; 
+                    localStorage.setItem('savegame', "");
 
                     if (game.highscore < game.score) {
                         game.highscore = game.score;
@@ -52,6 +53,8 @@ const gameRunning = {
 };
 
 function levelCompleted () {
+    localStorage.setItem('savegame', JSON.stringify(game));
+
     ch.drawText(canvas.width / 2, canvas.height / 2, "Score: " + game.score, {
         size: "80px",            
         align: "center",

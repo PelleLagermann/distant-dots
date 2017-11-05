@@ -2,12 +2,36 @@ var Webpack = require('webpack');
 var Path = require('path');
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const config = {
+const ddConfig = {
     entry: {
         dd: "./src/scripts/index.js"
     },    
     output: {
         path: Path.join(__dirname, 'dist'),
+        filename: '[name].js'
+    },
+    module: {
+        rules: [
+            {
+                use: 'babel-loader',
+                test: /\.js$/,
+                exclude: /node_modules/
+            }
+        ]
+    },
+    plugins: [     
+        new Webpack.DefinePlugin({
+            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
+        })
+    ]
+};
+
+const demoConfig = {
+    entry: {
+        dd: "./src/scripts/index.js"
+    },    
+    output: {
+        path: Path.join(__dirname, 'demo'),
         filename: '[name].[chunkhash].js'
     },
     module: {
@@ -45,4 +69,4 @@ const config = {
     ]
 };
 
-module.exports = config;
+module.exports = [ddConfig, demoConfig];
